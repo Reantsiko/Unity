@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class AiCar : MonoBehaviour
 {
-    public Vector3 worldUp;
     public float moveSpeed = 10f;
     public float turnRate = 10f;
-    Waypoints waypoints;
-    int currentIndex = 0;
-    Transform currentTarget;
+    private Waypoints waypoints;
+    private int currentIndex = 0;
+    private Transform currentTarget;
     public void SetWaypoints(Waypoints wp) => waypoints = wp;
 
-    void MoveToWaypoint()
+    private void MoveToWaypoint()
     {
         transform.position = Vector2.MoveTowards(transform.position, currentTarget.position, moveSpeed * Time.deltaTime);
         transform.up = Vector3.Lerp(transform.up, (currentTarget.position - transform.position), turnRate * Time.deltaTime);
@@ -23,7 +22,7 @@ public class AiCar : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
         if (waypoints == null)
             return;

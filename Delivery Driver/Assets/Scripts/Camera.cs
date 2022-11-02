@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Camera : MonoBehaviour
 {
-    float cameraHeight = -10;
+    public float cameraHeight = -10;
     Transform playerTransform;
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         var player = FindObjectOfType<Driver>();
         playerTransform = player.gameObject.transform;
@@ -15,7 +15,7 @@ public class Camera : MonoBehaviour
     }
 
     // Update is called once per frame
-    void LateUpdate()
+    private void LateUpdate()
     {
         if (playerTransform == null)
         {
