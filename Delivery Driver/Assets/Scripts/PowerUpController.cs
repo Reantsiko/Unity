@@ -17,28 +17,30 @@ public class PowerUpController : MonoBehaviour
         for (int i = 0; i < maxPowerups; i++)
         {
             var sb = Instantiate(prefab, powerupParent.transform);
-            SetPositionPowerupAndActivate(sb);
+            StartCoroutine(SetPositionPowerupAndActivate(sb));
         }
+
     }
 
     void Update()
     {
+        
         if (powerups.Any(sb => sb.gameObject.activeSelf == false))
         {
             var sb = powerups.Where(sb => sb.gameObject.activeSelf == false).FirstOrDefault();
-            if (sb == null)
-                return;
-            SetPositionPowerupAndActivate(sb);
+            if (sb != null)
+                StartCoroutine(SetPositionPowerupAndActivate(sb));
         }
     }
 
-    void SetPositionPowerupAndActivate(SpeedBoost obj)
+    IEnumerator SetPositionPowerupAndActivate(SpeedBoost obj)
     {
         int index = Random.Range(0, spawnLocations.Count);
         while (powerups.Any(sb => sb.GetPositionIndex() == index))
         {
             index = Random.Range(0, spawnLocations.Count);
             obj.SetPositionIndex(index);
+            yield return new WaitForEndOfFrame();
         }
         obj.transform.position = spawnLocations[index].transform.position;
         obj.gameObject.SetActive(true);

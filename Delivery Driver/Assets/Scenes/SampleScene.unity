@@ -3997,7 +3997,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4755970979904816410, guid: eebb18f230b69d34487656bcb2500e54, type: 3}
       propertyPath: moveSpeed
-      value: 95
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4755970979904816410, guid: eebb18f230b69d34487656bcb2500e54, type: 3}
       propertyPath: steerSpeed
@@ -11023,7 +11023,9 @@ MonoBehaviour:
   - {fileID: 2089691093}
   - {fileID: 461398454}
   - {fileID: 965143716}
+  powerupParent: {fileID: 1487010636}
   prefab: {fileID: 2172097386007271813, guid: 3428d2dccd3a2df4a9eb40c8b66a0fa3, type: 3}
+  maxPowerups: 5
 --- !u!4 &633885743
 Transform:
   m_ObjectHideFlags: 0

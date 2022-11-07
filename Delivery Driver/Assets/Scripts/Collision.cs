@@ -37,6 +37,7 @@ public class Collision : MonoBehaviour
         {
             var speedBoost = collider.GetComponent<SpeedBoost>();
             driver.moveSpeed = Mathf.Clamp(driver.moveSpeed + speedBoost.GetSpeedBonus(), 1, 50);
+            speedBoost.DisableObject();
         }
     }
 }

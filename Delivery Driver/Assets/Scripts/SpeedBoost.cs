@@ -15,25 +15,17 @@ public class SpeedBoost : MonoBehaviour
         GeneratePowerUp();
     }
 
-    public float GetSpeedBonus() 
-    {
-        StartCoroutine(DisableObject());
-        return speedToAdd[index];
-    }
+    public float GetSpeedBonus() => speedToAdd[index];
 
-    private IEnumerator DisableObject()
-    {
-        yield return new WaitForSeconds(0.5f);
-        gameObject.SetActive(false);
-    }
+    public void DisableObject()=> gameObject.SetActive(false);
 
     public void SetPositionIndex(int indexToSet) => positionIndex = indexToSet;
     public int GetPositionIndex() => positionIndex;
 
     private void GeneratePowerUp()
     {
-        index = Random.Range(1,4);
+        index = Random.Range(0,3);
         for (int i = 0; i < sprites.Count; i++)
-            sprites[i].gameObject.SetActive(i + 1 <= index);
+            sprites[i].gameObject.SetActive(i <= index);
     }
 }
