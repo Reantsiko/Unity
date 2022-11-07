@@ -36,7 +36,7 @@ public class Collision : MonoBehaviour
         if (collider.tag == "Speed Boost" && driver != null)
         {
             var speedBoost = collider.GetComponent<SpeedBoost>();
-            driver.moveSpeed = Mathf.Clamp(driver.moveSpeed + speedBoost.speedToAdd, 1, 50);
+            driver.moveSpeed = Mathf.Clamp(driver.moveSpeed + speedBoost.GetSpeedBonus(), 1, 50);
             Destroy(speedBoost.gameObject);
         }
     }
