@@ -4,6 +4,7 @@ using UnityEngine;
 public class Timer : ImageHandler
 {
     private bool hasColorChanged = false;
+    private bool loadNextQuestion = false;
     public bool isSelectedAnswerCountdown;
     private Quiz quiz;
     private Coroutine countDownRoutine;
@@ -15,12 +16,14 @@ public class Timer : ImageHandler
 
     public IEnumerator TimerCountdown(float startTime)
     {
+        if (loadNextQuestion)
+            ChangeColor(Color.white);
         var waiter = new WaitForEndOfFrame();
         float timer = startTime;
         SetImageFillAmount(timer / startTime);
         while (timer > 0)
         {
-            if (timer < 6 && !hasColorChanged)
+            if (timer < 6 && !hasColorChanged && !loadNextQuestion)
             {
                 hasColorChanged = true;
                 ChangeColor(Color.red);
@@ -29,25 +32,32 @@ public class Timer : ImageHandler
             timer -= Time.deltaTime;
             SetImageFillAmount(timer / startTime);
         }
-        if (isSelectedAnswerCountdown)
-            quiz.ShowAnswerAfterSelection();
+        if (!loadNextQuestion)
+        {
+            if (isSelectedAnswerCountdown)
+                quiz.ShowAnswerAfterSelection();
+            else
+                quiz.ShowAnswer();
+        }
         else
-            quiz.ShowAnswer();
+            quiz.LoadNextQuestion();
         Debug.Log($"Timer has expired");
     }
 
-    public void StartCountdownRoutine(float timeToSet)
+    public void StartCountdownRoutine(float timeToSet, bool isNewQuestion = false)
     {
         if (countDownRoutine != null)
         {
             StopCoroutine(countDownRoutine);
             countDownRoutine = null;
         }
+        loadNextQuestion = isNewQuestion;
         countDownRoutine = StartCoroutine(TimerCountdown(timeToSet));
     }
     public void Reset()
     {
         isSelectedAnswerCountdown = false;
+        loadNextQuestion = false;
         hasColorChanged = false;
         ChangeColor(Color.white);
     }

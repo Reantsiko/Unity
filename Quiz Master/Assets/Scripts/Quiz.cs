@@ -6,14 +6,21 @@ using UnityEngine.UI;
 
 public class Quiz : MonoBehaviour
 {
+    [Header("UI Elements")]
+    [SerializeField] private TextMeshProUGUI titleText;
     [SerializeField] private TextMeshProUGUI questionText;
+    [SerializeField] private TextMeshProUGUI finalScoreText;
     [SerializeField] private List<Button> answerButtons;
+    [SerializeField] private Sprite defaultAnswerSprite;
+    [SerializeField] private Sprite selectedAnswerSprite;
+    [SerializeField] private GameObject finishScreen;
+    [Header("Questions")]
     [SerializeField] List<QuestionSO> questions;
+    [Header("Timer Values")]
     [SerializeField] private float timeToAnswer = 30f;
     [SerializeField] private float timerAfterSelection = 5f;
     [SerializeField] private float timeBetweenQuestions = 3f;
-    [SerializeField] private Sprite defaultAnswerSprite;
-    [SerializeField] private Sprite selectedAnswerSprite;
+    [Header("External Scripts")]
     [SerializeField] private Timer timer;
     [SerializeField] private ProgressBar progressBar;
     [SerializeField] private ScoreTextHandler scoreHandler;
@@ -30,14 +37,14 @@ public class Quiz : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(SetupQuestion(false));
+        gameObject.SetActive(false);
+        finishScreen.SetActive(false);
     }
 
     public IEnumerator SetupQuestion(bool isNewQuestion)
     {
         if (isNewQuestion)
             ResetUI();
-        yield return new WaitForSeconds(1f);
         progressBar.SetImageFillAmount((float)(currentQuestionIndex + 1) / questions.Count);
         answerButtons.ForEach(b => HideShowButton(b, false));
         ChangeQuestionText($"{questions[currentQuestionIndex].GetQuestion()}");
@@ -85,7 +92,7 @@ public class Quiz : MonoBehaviour
             answerButtons[correctIndex].image.color = Color.green;
             UpdateScore(false);
         }
-        StartCoroutine(LoadNextQuestion());
+        timer.StartCountdownRoutine(timeBetweenQuestions, true);
     }
 
     public void ShowAnswer()
@@ -95,7 +102,20 @@ public class Quiz : MonoBehaviour
         var correctIndex = questions[currentQuestionIndex].GetCorrectAnswerIndex();
         answerButtons[correctIndex].image.color = Color.green;
         UpdateScore(false);
-        StartCoroutine(LoadNextQuestion());
+        timer.StartCountdownRoutine(timeBetweenQuestions, true);
+    }
+
+    public void PrepareQuiz(ThemeSO theme)
+    {
+        currentQuestionIndex = 0;
+        correctAnswers = 0;
+        selectedAnswer = -1;
+        scoreHandler.UpdateText(0);
+        timer.isSelectedAnswerCountdown = false;
+        titleText.text = $"{theme.GetThemeName()}-quiz-it";
+        questions = theme.GetQuestions();
+        SetButtonInteraction(false);
+        StartCoroutine(SetupQuestion(true));
     }
 
     private void UpdateScore(bool isCorrect)
@@ -129,14 +149,22 @@ public class Quiz : MonoBehaviour
         });
     }
 
-    private IEnumerator LoadNextQuestion()
+    public void LoadNextQuestion()
     {
         currentQuestionIndex++;
-        yield return new WaitForSecondsRealtime(timeBetweenQuestions);
         if (currentQuestionIndex < questions.Count)
         {
             timer.Reset();
             StartCoroutine(SetupQuestion(true));
         }
+        else
+            LoadFinishScreen();
+    }
+
+    private void LoadFinishScreen()
+    {
+        finalScoreText.text = $"Congratulations!\nYou have finished the quiz!\nYour final score is:\n{Mathf.Floor((float)correctAnswers / (currentQuestionIndex)*100)}%\n\nClick on the button below to return to the main menu.";
+        finishScreen.SetActive(true);
+        gameObject.SetActive(false);
     }
 }
