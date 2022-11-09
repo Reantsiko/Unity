@@ -4,16 +4,16 @@ using UnityEngine;
 using TMPro;
 public class ScoreTextHandler : MonoBehaviour
 {
-    TMP_Text text;
+    TextMeshProUGUI text;
     void Start()
     {
-        text = GetComponent<TMP_Text>();
-        UpdateText(100f);
+        text = GetComponent<TextMeshProUGUI>();
+        UpdateText(0);
     }
 
     public void UpdateText(float score)
     {
         if (text == null) return;
-        text.text = $"Score: {score}%";
+        text.text = $"Score: {Mathf.Floor(score * 100)}%";
     }
 }

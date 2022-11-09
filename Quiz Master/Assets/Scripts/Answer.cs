@@ -5,6 +5,6 @@ public class Answer
     [SerializeField] private string answer;
     [SerializeField] private bool isCorrect;
 
-    public string GetAnswer() => answer;
+    public string GetAnswerString() => answer;
     public bool GetIsCorrect() => isCorrect;
 }

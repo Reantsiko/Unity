@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ProgressBar : ImageHandler
 {
-    public override void Start()
+    public override void Awake()
     {
-        base.Start();
+        base.Awake();
         SetImageFillAmount(0);
     }
 }

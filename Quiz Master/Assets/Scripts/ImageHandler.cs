@@ -6,7 +6,7 @@ public class ImageHandler : MonoBehaviour
 {
     [SerializeField] private Image image;
 
-    public virtual void Start()
+    public virtual void Awake()
     {
         image = GetComponent<Image>();
     }
@@ -17,5 +17,12 @@ public class ImageHandler : MonoBehaviour
             image.fillAmount = value;
         else
             Debug.LogError($"Image is empty");
+    }
+
+    public void ChangeColor(Color color)
+    {
+        if (color == null)
+            return;
+        image.color = color;
     }
 }
