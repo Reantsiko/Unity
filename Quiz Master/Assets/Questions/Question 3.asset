@@ -12,5 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99a461538a4b5954199dec03835ebadc, type: 3}
   m_Name: Question 3
   m_EditorClassIdentifier: 
-  question: Enter new question text here
-  answers: []
+  question: How many classes are there in World of Warcraft?
+  answers:
+  - answer: 10
+    isCorrect: 0
+  - answer: 11
+    isCorrect: 0
+  - answer: 12
+    isCorrect: 0
+  - answer: 13
+    isCorrect: 1
